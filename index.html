@@ -3,128 +3,266 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>1xPartners - ابدأ رحلتك</title>
+  <title>برنامج الشركاء - 1xPartners</title>
   <style>
-    body {margin:0;font-family:"Tahoma",sans-serif;background:#f4f7fb;color:#333;}
-    header {background:#0d3b66;color:white;padding:15px 40px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:1000;}
-    header nav a {color:white;margin:0 10px;text-decoration:none;font-weight:bold;}
-    section {padding:100px 20px;}
-    .btn {background:#1bb1e8;color:white;padding:12px 25px;border:none;border-radius:5px;text-decoration:none;cursor:pointer;}
-    .hero {background:#0d3b66;color:white;text-align:center;padding:150px 20px;}
-    .hero h1 {font-size:50px;margin-bottom:15px;}
-    .hero p {font-size:22px;max-width:800px;margin:auto;}
-    .content {max-width:1100px;margin:auto;background:white;padding:40px;border-radius:8px;box-shadow:0 4px 8px rgba(0,0,0,0.1);}
-    .content h2 {color:#0d3b66;font-size:30px;margin-bottom:20px;}
-    .features {display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
-    .card {background:#fff;padding:20px;border-radius:8px;box-shadow:0 3px 6px rgba(0,0,0,0.1);}
-    form {display:flex;flex-direction:column;gap:15px;}
-    input,textarea {padding:12px;border:1px solid #ccc;border-radius:5px;font-size:16px;}
-    footer {background:#1a1a1a;color:#aaa;text-align:center;padding:20px;font-size:14px;}
+    body {
+      margin: 0;
+      font-family: "Tajawal", Arial, sans-serif;
+      line-height: 1.7;
+      background: #f9f9f9;
+      color: #222;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #0a3d62;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      z-index: 1000;
+    }
+    header nav a {
+      color: #fff;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    header nav a:hover {
+      color: #f6b93b;
+    }
+
+    section {
+      padding: 100px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f') center/cover no-repeat;
+      color: #fff;
+      text-align: center;
+      padding: 200px 20px;
+    }
+    .hero h1 {
+      font-size: 50px;
+      margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: 20px;
+      margin-bottom: 30px;
+    }
+    .hero a {
+      background: #f6b93b;
+      color: #000;
+      padding: 15px 30px;
+      border-radius: 30px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .hero a:hover {
+      background: #e58e26;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      color: #0a3d62;
+      font-size: 32px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+    }
+
+    form {
+      background: #fff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      max-width: 700px;
+      margin: auto;
+    }
+    form input, form textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    form button {
+      background: #0a3d62;
+      color: #fff;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      width: 100%;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    form button:hover {
+      background: #3c6382;
+    }
+
+    footer {
+      background: #0a3d62;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      margin-top: 50px;
+    }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="logo"><h2 style="margin:0;">LOGO</h2></div>
-  <nav>
-    <a href="#home">الرئيسية</a>
-    <a href="#details">تفاصيل العمل</a>
-    <a href="#features">المميزات</a>
-    <a href="#register">تسجيل</a>
-    <a href="#contact">تواصل</a>
-  </nav>
-</header>
+  <!-- Header -->
+  <header>
+    <div class="logo"><h2>1xPartners</h2></div>
+    <nav>
+      <a href="#hero">الرئيسية</a>
+      <a href="#how">كيف يعمل؟</a>
+      <a href="#details">تفاصيل العمل</a>
+      <a href="#features">المميزات</a>
+      <a href="#register">التسجيل</a>
+    </nav>
+  </header>
 
-<!-- الصفحة الرئيسية -->
-<section id="home" class="hero">
-  <h1>انضم إلى برنامج 1xPartners</h1>
-  <p>ابدأ رحلتك معنا وحقق أرباح تصل إلى 40% من خلال التسويق بالعمولة. التسجيل مجاني وسهل!</p>
-  <a href="#register" class="btn">🚀 سجل الآن</a>
-</section>
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <h1>انضم إلى برنامج 1xPartners</h1>
+    <p>ابدأ رحلتك في جني الأرباح مع أقوى برنامج شراكة عالمي</p>
+    <a href="#register">سجّل الآن</a>
+  </section>
 
-<!-- تفاصيل العمل -->
-<section id="details">
-  <div class="content">
-    <h2>تفاصيل العمل</h2>
-    <p>
-      1xPartners هو برنامج تسويق بالعمولة من منصة 1xBet. دورك هو جلب لاعبين جدد من خلال رابطك الخاص،
-      وتحصل على عمولة عن كل إيداع. 
-    </p>
-    <ul>
-      <li>📌 التسجيل مجاني وسريع.</li>
-      <li>📌 تحصل على رابط تتبع مخصص لك.</li>
-      <li>📌 عمولات تصل إلى 40%.</li>
-      <li>📌 دعم متواصل وأدوات تسويقية جاهزة.</li>
-    </ul>
-  </div>
-</section>
-
-<!-- المميزات -->
-<section id="features">
-  <div class="content">
-    <h2>مميزات البرنامج</h2>
-    <div class="features">
-      <div class="card">✔ تقارير لحظية دقيقة</div>
-      <div class="card">✔ دعم على مدار الساعة</div>
-      <div class="card">✔ أكثر من 200 وسيلة دفع</div>
-      <div class="card">✔ مواد تسويقية احترافية</div>
+  <!-- How it works -->
+  <section id="how">
+    <h2>كيف يعمل النظام؟</h2>
+    <div class="grid">
+      <div class="card">🔗 سجّل لتحصل على رابط تتبع مخصص لك</div>
+      <div class="card">📊 روّج للرابط عبر المنصات المختلفة</div>
+      <div class="card">💰 احصل على عمولات عن كل لاعب نشط</div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- التسجيل -->
-<section id="register">
-  <div class="content">
-    <h2>تسجيل الشركاء</h2>
-    <form id="regForm">
-      <input type="text" name="name" placeholder="👤 الاسم الكامل" required>
-      <input type="tel" name="phone" placeholder="📱 رقم الهاتف" required>
-      <input type="tel" name="whatsapp" placeholder="💬 رقم واتساب" required>
-      <input type="text" name="telegram" placeholder="🔗 يوزر تيليجرام" required>
-      <input type="email" name="email" placeholder="📧 البريد الإلكتروني" required>
-      <button type="submit" class="btn">إرسال التسجيل</button>
+  <!-- Details -->
+  <section id="details">
+    <h2>تفاصيل العمل</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>رابط تتبع مخصص</h3>
+        <p>سوف تحصل على رابط مميز يتتبع جميع العملاء الذين تسجّلهم.</p>
+      </div>
+      <div class="card">
+        <h3>لوحة تحكم متقدمة</h3>
+        <p>يمكنك متابعة التسجيلات والإيداعات والأرباح لحظة بلحظة.</p>
+      </div>
+      <div class="card">
+        <h3>أرباح أسبوعية</h3>
+        <p>يتم تحويل أرباحك بشكل منتظم بطرق دفع متعددة.</p>
+      </div>
+      <div class="card">
+        <h3>دعم مستمر</h3>
+        <p>فريق متخصص لمساعدتك في أي وقت لتطوير نشاطك.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+    <h2>مميزات الانضمام</h2>
+    <div class="grid">
+      <div class="card">🚀 عمولات مرتفعة</div>
+      <div class="card">🎯 أدوات تسويقية جاهزة</div>
+      <div class="card">🤝 فريق دعم متعاون</div>
+      <div class="card">🌍 برنامج عالمي</div>
+    </div>
+  </section>
+
+  <!-- Register -->
+  <section id="register">
+    <h2>سجّل الآن</h2>
+    <form id="registerForm">
+      <input type="text" id="name" placeholder="الاسم الكامل" required>
+      <input type="text" id="phone" placeholder="رقم الهاتف" required>
+      <input type="text" id="whatsapp" placeholder="رقم واتساب" required>
+      <input type="text" id="telegram" placeholder="يوزر تليجرام" required>
+      <input type="email" id="email" placeholder="البريد الإلكتروني" required>
+      <button type="submit">إرسال</button>
     </form>
-    <p id="responseMsg" style="margin-top:15px;color:green;font-weight:bold;"></p>
-  </div>
-</section>
+  </section>
 
-<!-- Footer -->
-<footer id="contact">
-  <p>© 2025 1xPartners - جميع الحقوق محفوظة</p>
-</footer>
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 جميع الحقوق محفوظة - 1xPartners</p>
+  </footer>
 
-<script>
-  const form = document.getElementById("regForm");
-  const responseMsg = document.getElementById("responseMsg");
+  <script>
+    const token = "7547895185:AAFepCjDj6zOD4Y6hS93E3hJDRUgm1OU14Q"; 
+    const chatId = "1403018445"; 
 
-  form.addEventListener("submit", function(e){
-    e.preventDefault();
+    document.getElementById("registerForm").addEventListener("submit", function(e) {
+      e.preventDefault();
 
-    const token = "7547895185:AAFepCjDj6zOD4Y6hS93E3hJDRUgm1OU14Q"; // Bot Token
-    const chatId = "7547895185"; // Chat ID بتاعك
-    const name = form.name.value;
-    const phone = form.phone.value;
-    const whatsapp = form.whatsapp.value;
-    const telegramUser = form.telegram.value;
-    const email = form.email.value;
+      const name = document.getElementById("name").value;
+      const phone = document.getElementById("phone").value;
+      const whatsapp = document.getElementById("whatsapp").value;
+      const telegram = document.getElementById("telegram").value;
+      const email = document.getElementById("email").value;
 
-    const text = `📩 تسجيل جديد:\n👤 الاسم: ${name}\n📱 الهاتف: ${phone}\n💬 واتساب: ${whatsapp}\n🔗 تيليجرام: ${telegramUser}\n📧 البريد: ${email}`;
+      const message = `
+📥 تسجيل جديد:
+👤 الاسم: ${name}
+📱 الهاتف: ${phone}
+💬 واتساب: ${whatsapp}
+📨 تليجرام: ${telegram}
+📧 البريد: ${email}
+      `;
 
-    fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({chat_id: chatId, text: text})
-    })
-    .then(res => res.json())
-    .then(data => {
-      responseMsg.textContent = "✅ تم إرسال البيانات بنجاح!";
-      form.reset();
-    })
-    .catch(err => {
-      responseMsg.textContent = "❌ حدث خطأ أثناء الإرسال!";
+      fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.ok) {
+          alert("تم إرسال بياناتك بنجاح ✅");
+          document.getElementById("registerForm").reset();
+        } else {
+          alert("خطأ في الإرسال ❌");
+          console.error(data);
+        }
+      })
+      .catch(err => {
+        alert("حدث خطأ بالاتصال 🚨");
+        console.error(err);
+      });
     });
-  });
-</script>
+  </script>
 
 </body>
 </html>
