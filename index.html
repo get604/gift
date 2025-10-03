@@ -1,39 +1,514 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>برنامج الشركاء - 1xPartners</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>1xPartners — انضم وابدأ الربح</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <style>
-    body {
-      margin: 0;
-      font-family: "Tajawal", Arial, sans-serif;
-      line-height: 1.7;
-      background: #f9f9f9;
-      color: #222;
+    :root{
+      --bg:#0f1724;
+      --accent1:#1fb6ff;
+      --accent2:#6ce7b0;
+      --card:#ffffff;
+      --muted:#7b8aa3;
+      --radius:14px;
+      --maxw:1200px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Tajawal",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background:linear-gradient(180deg,#071028 0%, #071836 60%);
+      color:#eef2f7;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.6;
     }
 
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: #0a3d62;
-      color: #fff;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 40px;
-      z-index: 1000;
+    /* Header */
+    header{
+      position:fixed;left:0;right:0;top:0;
+      height:72px; display:flex; align-items:center; justify-content:space-between;
+      padding:10px 24px; gap:12px;
+      z-index:999;
+      background:linear-gradient(180deg, rgba(4,10,20,0.55), rgba(4,10,20,0.25));
+      backdrop-filter: blur(6px);
+      border-bottom:1px solid rgba(255,255,255,0.03);
     }
-    header nav a {
-      color: #fff;
-      margin: 0 15px;
-      text-decoration: none;
-      font-weight: bold;
+    .logo{display:flex;align-items:center;gap:12px}
+    .logo .mark{
+      width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,var(--accent1),#8b5cf6);
+      display:flex;align-items:center;justify-content:center;font-weight:900;color:#042039;font-size:18px;
+      box-shadow:0 6px 18px rgba(11,122,154,0.12);
     }
-    header nav a:hover {
-      color: #f6b93b;
+    .logo .title{font-weight:700;font-size:18px;color:#fff}
+    nav{display:flex;gap:18px;align-items:center}
+    nav a{color:rgba(255,255,255,0.85);text-decoration:none;font-weight:600}
+    nav a.cta{
+      background:linear-gradient(90deg,var(--accent1),#f6b93b);
+      color:#021426;padding:10px 16px;border-radius:12px;
+      box-shadow:0 8px 24px rgba(31,182,255,0.12);font-weight:800
+    }
+
+    /* Mobile menu */
+    .menu-btn{display:none;font-size:20px;color:#fff;border:none;background:transparent}
+    @media(max-width:900px){
+      nav{display:none;position:absolute;top:72px;right:0;background:linear-gradient(180deg, #041226, #031424);padding:16px;border-radius:12px;margin:12px}
+      nav.show{display:flex;flex-direction:column;gap:10px;width:220px}
+      .menu-btn{display:block}
+    }
+
+    main{margin-top:86px}
+
+/* Hero */
+.hero{
+  min-height:84vh;
+  display:flex;align-items:center;justify-content:center;padding:40px 20px;
+  background:
+    radial-gradient(1200px 600px at 10% 10%, rgba(31,182,255,0.08), transparent 8%),
+    radial-gradient(800px 400px at 90% 90%, rgba(139,92,246,0.06), transparent 8%);
+}
+.hero-inner{max-width:var(--maxw);display:grid;grid-template-columns:1fr 460px;gap:40px;align-items:center;width:100%}
+@media(max-width:980px){.hero-inner{grid-template-columns:1fr;padding:10px}}
+.hero-left h1{font-size:44px;margin:0 0 14px;line-height:1.05;color:#fff}
+.hero-left p{color:var(--muted);font-size:18px;margin-bottom:22px}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap}
+.btn-primary{
+  padding:14px 20px;border-radius:12px;border:none;background:linear-gradient(90deg,var(--accent1),#e58e26);
+  color:#042039;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 12px 30px rgba(31,182,255,0.12);
+}
+.btn-secondary{
+  padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);color:#fff;background:transparent;cursor:pointer;
+}
+
+/* hero card on right */
+.hero-card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  border-radius:16px;padding:22px;color:#fff;box-shadow:0 8px 30px rgba(3,8,18,0.5);backdrop-filter: blur(6px);
+}
+.kpi{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+.kpi .num{font-size:20px;font-weight:800;color:#fff}
+.kpi .lbl{font-size:13px;color:var(--muted)}
+
+/* Sections */
+.section{
+  max-width:var(--maxw);margin:0 auto;padding:48px 20px;
+}
+.section .heading{display:flex;align-items:center;gap:18px;justify-content:center;margin-bottom:22px}
+.section h2{margin:0;color:#e6f0ff;font-size:28px}
+.lead{color:var(--muted);text-align:center;margin-bottom:28px}
+
+/* cards grid */
+.grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+}
+@media(max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.grid{grid-template-columns:1fr}}
+
+.card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+  border-radius:12px;padding:22px;color:#fff;box-shadow:0 10px 30px rgba(8,12,20,0.6);
+}
+.card i{font-size:30px;color:var(--accent1);display:block;margin-bottom:12px}
+.card h3{margin:0 0 8px}
+.card p{color:var(--muted);font-size:15px;margin:0}
+
+/* Register form large */
+.form-wrap{
+  display:flex;gap:28px;align-items:stretch;
+  background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  padding:20px;border-radius:14px;box-shadow:0 12px 36px rgba(3,8,18,0.6);
+}
+@media(max-width:980px){.form-wrap{flex-direction:column}}
+.form-left{flex:1;padding:10px}
+.form-right{width:420px;max-width:100%}
+.field{margin-bottom:12px}
+.input{
+  width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);
+  background:rgba(255,255,255,0.02);color:#fff;font-size:15px;
+}
+.small{font-size:13px;color:var(--muted)}
+.submit-btn{
+  width:100%;padding:12px;border-radius:10px;border:none;background:linear-gradient(90deg,var(--accent1),var(--accent2));
+  color:#022430;font-weight:800;cursor:pointer;font-size:16px;
+  box-shadow:0 14px 40px rgba(31,182,255,0.08);
+}
+.hint{font-size:13px;color:var(--muted);margin-top:8px}
+
+/* Testimonials */
+.testimonials{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.testimonials{grid-template-columns:1fr}}
+.testimonial{background:rgba(255,255,255,0.02);padding:18px;border-radius:12px}
+.testimonial p{color:var(--muted);margin:0}
+.testimonial h4{margin-top:12px;color:#fff}
+
+/* FAQ */
+.faq-item{background:rgba(255,255,255,0.02);padding:14px;border-radius:10px;margin-bottom:10px;cursor:pointer}
+.faq-item h4{margin:0;color:#fff}
+.faq-answer{display:none;color:var(--muted);margin-top:8px}
+
+/* Footer */
+footer{
+  padding:28px 20px;text-align:center;color:rgba(255,255,255,0.8);margin-top:40px;border-top:1px solid rgba(255,255,255,0.03)
+}
+
+/* small utilities */
+.center{text-align:center}
+.success-toast{position:fixed;left:50%;transform:translateX(-50%);bottom:28px;background:#062b2b;padding:12px 18px;border-radius:10px;color:#b7f5ea;box-shadow:0 10px 30px rgba(2,9,12,0.6);display:none}
+.error-toast{position:fixed;left:50%;transform:translateX(-50%);bottom:28px;background:#3b0d1c;padding:12px 18px;border-radius:10px;color:#ffd7e0;box-shadow:0 10px 30px rgba(15,6,10,0.6);display:none}
+.small-muted{color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <div class="mark"><!-- ضع لوجوك هنا -->1X</div>
+      <div class="title">1xPartners</div>
+    </div>
+
+    <button class="menu-btn" id="menuBtn"><i class="fa fa-bars"></i></button>
+
+    <nav id="mainNav">
+      <a href="#hero">الرئيسية</a>
+      <a href="#how">كيف يعمل؟</a>
+      <a href="#details">تفاصيل</a>
+      <a href="#testi">شركاؤنا</a>
+      <a href="#faq">FAQ</a>
+      <a href="#register" class="cta">سجّل الآن</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <div class="hero-inner">
+        <div class="hero-left">
+          <h1>انضم إلى شبكة شركاء 1xPartners — اربح باستمرار</h1>
+          <p class="lead">سجّل مجاناً، احصل على رابط تتبع خاص وابدأ الترويج. اعمل على أي قناة تملكها — مواقع، سوشيال، تيليجرام — واستلم عمولات أسبوعية عبر طرق دفع متعددة.</p>
+
+          <div class="cta-row">
+            <a class="btn-primary" href="#register">ابدأ التسجيل الآن</a>
+            <button class="btn-secondary" id="howBtn">كيف أبدأ؟</button>
+          </div>
+
+          <div style="margin-top:22px;display:flex;gap:14px;flex-wrap:wrap">
+            <div style="background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:10px">
+              <div class="small-muted">عمولة متوسطة</div>
+              <div style="font-weight:800;font-size:18px">حتى 40%</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:10px">
+              <div class="small-muted">طرق سحب</div>
+              <div style="font-weight:800;font-size:18px">200+</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:10px">
+              <div class="small-muted">دعم</div>
+              <div style="font-weight:800;font-size:18px">24/7</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="hero-card">
+          <div class="kpi"><div style="flex:1"><div class="num">لوحة تحكم متقدمة</div><div class="lbl">تقارير لحظية وanalytics</div></div></div>
+
+          <div style="margin-top:8px" class="kpi">
+            <div style="flex:1"><div class="num">مواد تسويقية جاهزة</div><div class="lbl">بنرات، صفحات هبوط، أكواد</div></div>
+          </div>
+
+          <div style="margin-top:18px">
+            <div class="small-muted">ابدأ الآن — التسجيل مجاني</div>
+            <div style="display:flex;gap:10px;margin-top:12px">
+              <a class="btn-primary" href="#register" style="padding:10px 12px;font-size:14px">سجل الآن</a>
+              <a class="btn-secondary" href="#details" style="padding:10px 12px;font-size:14px">المميزات</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- HOW -->
+    <section id="how" class="section">
+      <div class="heading"><h2>كيف يعمل البرنامج؟</h2></div>
+      <p class="lead">ثلاث خطوات بسيطة فقط لتبدأ في جني الأرباح — سجل، روّج، واستلم عمولاتك.</p>
+
+      <div class="grid" style="margin-top:18px">
+        <div class="card">
+          <i class="fa-solid fa-user-plus"></i>
+          <h3>1 — التسجيل</h3>
+          <p>سجّل داخل الفورم أدناه واحصل على وصول فوري للوحة تحكمك.</p>
+        </div>
+        <div class="card">
+          <i class="fa-solid fa-bullhorn"></i>
+          <h3>2 — الترويج</h3>
+          <p>استخدم الروابط، الكوبونات، البنرات ومحتويات جاهزة لجذب المستخدمين.</p>
+        </div>
+        <div class="card">
+          <i class="fa-solid fa-hand-holding-dollar"></i>
+          <h3>3 — الارباح</h3>
+          <p>تحصل على عمولات متكررة وتقرير يوضح أداء كل رابط وكل قناة.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DETAILS -->
+    <section id="details" class="section" style="padding-top:32px">
+      <div class="heading"><h2>تفاصيل العمل & الأدوات</h2></div>
+      <p class="lead">نقدّم لك إمكانيات متقدمة لتطوير حملاتك وقياس الأداء بدقة.</p>
+
+      <div class="grid" style="margin-top:18px">
+        <div class="card">
+          <i class="fa-solid fa-chart-line"></i>
+          <h3>لوحة تقارير</h3>
+          <p>سجل، تابع التسجيلات، الإيداعات، واحسب أرباحك بدقة بالزمن الحقيقي.</p>
+        </div>
+        <div class="card">
+          <i class="fa-solid fa-file-download"></i>
+          <h3>ملفات تسويق جاهزة</h3>
+          <p>بنرات، صور، وروابط مختصرة لتحميلها واستخدامها مباشرة في حملاتك.</p>
+        </div>
+        <div class="card">
+          <i class="fa-solid fa-user-shield"></i>
+          <h3>حماية وتحكم</h3>
+          <p>نظام تتبع آمن وتحديثات دورية لضمان مصداقية الحسابات والعمليات.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testi" class="section" style="padding-top:32px">
+      <div class="heading"><h2>آراء شركائنا</h2></div>
+      <div class="testimonials">
+        <div class="testimonial">
+          <p>"منذ انضمامي للبرنامج، الدخل تحسّن بشكل ملحوظ. الدعم سريع ومواد التسويق ممتازة."</p>
+          <h4>- أيمن</h4>
+        </div>
+        <div class="testimonial">
+          <p>"اللوحة والتقارير خفّضت وقت التحليل لمعدل التحويل، وده حسّن أرباحي بأكثر من 30%."</p>
+          <h4>- ندى</h4>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section" style="padding-top:32px">
+      <div class="heading"><h2>الأسئلة الشائعة</h2></div>
+      <div style="max-width:920px;margin:auto">
+        <div class="faq-item"><h4>متى استلم أرباحي؟</h4><div class="faq-answer">نحوياً يتم التوزيع أسبوعيًا، لكن يمكنك مراجعة خيارات الدفع في حسابك.</div></div>
+        <div class="faq-item"><h4>هل التسجيل مجاني؟</h4><div class="faq-answer">نعم، التسجيل مجاني تمامًا ولا توجد رسوم.</div></div>
+        <div class="faq-item"><h4>هل أحتاج خبرة سابقة؟</h4><div class="faq-answer">لا — نوفر لك أدوات ومحتوى جاهز للترويج خطوة بخطوة.</div></div>
+      </div>
+    </section>
+
+    <!-- REGISTER -->
+    <section id="register" class="section" style="padding-bottom:60px">
+      <div class="heading"><h2>سجّل كشريك الآن</h2></div>
+
+      <div class="form-wrap" style="max-width:var(--maxw);margin:auto">
+        <div class="form-left">
+          <h3 style="margin-bottom:8px">املأ بياناتك الأساسية</h3>
+          <p class="small-muted">سنرسل لك رابط التفعيل وتعليمات البدء فور استقبال التسجيل.</p>
+
+          <div style="margin-top:16px" class="small-muted">
+            <strong>نصائح للتسجيل:</strong>
+            <ul style="margin:8px 0 0 16px;">
+              <li>استخدم رقم واتساب نشط لتسريع التواصل.</li>
+              <li>حاول وضع يوزر تيليجرام الصحيح (بدون @).</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="form-right">
+          <form id="registerForm" autocomplete="off" novalidate>
+            <div class="field"><input id="name" class="input" type="text" placeholder="الاسم الكامل *" required></div>
+            <div class="field"><input id="phone" class="input" type="tel" placeholder="رقم الهاتف *" required></div>
+            <div class="field"><input id="whatsapp" class="input" type="tel" placeholder="رقم واتساب *" required></div>
+            <div class="field"><input id="telegramUser" class="input" type="text" placeholder="يوزر تيليجرام (مثال: eslam) *" required></div>
+            <div class="field"><input id="email" class="input" type="email" placeholder="البريد الإلكتروني *" required></div>
+
+            <button type="submit" class="submit-btn">إرسال بيانات التسجيل</button>
+            <div class="hint center small-muted" style="margin-top:10px">بمجرد الإرسال ستصلك رسالة تأكيد في الحساب الخاص بك.</div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div style="max-width:var(--maxw);margin:auto">
+      <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center">
+        <div class="small-muted">© 2025 1xPartners</div>
+        <div class="small-muted">|</div>
+        <div class="small-muted">شروط الاستخدام • سياسة الخصوصية</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toasts -->
+  <div id="successToast" class="success-toast">✅ تم إرسال البيانات بنجاح</div>
+  <div id="errorToast" class="error-toast">❌ حدث خطأ أثناء الإرسال</div>
+
+<script>
+/* ======== Config - ضع توكن بوتك و chat id هنا ======== */
+const TELEGRAM_BOT_TOKEN = "7547895185:AAFepCjDj6zOD4Y6hS93E3hJDRUgm1OU14Q";
+const TELEGRAM_CHAT_ID = "1403018445";
+/* ==================================================== */
+
+/* Mobile menu toggle */
+const menuBtn = document.getElementById('menuBtn');
+const mainNav = document.getElementById('mainNav');
+menuBtn && menuBtn.addEventListener('click', () => mainNav.classList.toggle('show'));
+
+/* Smooth scroll for internal anchors */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', function(e){
+    // allow default if external anchor
+    const target = this.getAttribute('href');
+    if(target && target.startsWith('#')){
+      e.preventDefault();
+      const el = document.querySelector(target);
+      if(el) el.scrollIntoView({behavior:'smooth',block:'center'});
+      // close mobile menu
+      if(mainNav.classList.contains('show')) mainNav.classList.remove('show');
+    }
+  });
+});
+
+/* FAQ toggle */
+document.querySelectorAll('.faq-item').forEach(item=>{
+  item.addEventListener('click', ()=>{
+    const ans = item.querySelector('.faq-answer');
+    if(ans.style.display === 'block') ans.style.display = 'none';
+    else ans.style.display = 'block';
+  });
+});
+
+/* Helper: show toasts */
+function showSuccess(msg){
+  const t = document.getElementById('successToast');
+  t.textContent = msg || '✅ تم إرسال البيانات بنجاح';
+  t.style.display = 'block';
+  setTimeout(()=> t.style.display='none', 4200);
+}
+function showError(msg){
+  const t = document.getElementById('errorToast');
+  t.textContent = msg || '❌ حدث خطأ أثناء الإرسال';
+  t.style.display = 'block';
+  setTimeout(()=> t.style.display='none', 4200);
+}
+
+/* Simple client-side validation for numbers/emails */
+function isValidEmail(v){ return /\S+@\S+\.\S+/.test(v); }
+function isValidPhone(v){ return /^[0-9+\-\s]{6,20}$/.test(v); }
+
+/* FORM submit -> send to Telegram */
+const form = document.getElementById('registerForm');
+form && form.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+
+  // get values
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const whatsapp = document.getElementById('whatsapp').value.trim();
+  const telegramUser = document.getElementById('telegramUser').value.trim();
+  const email = document.getElementById('email').value.trim();
+
+  // validate
+  if(!name || !phone || !whatsapp || !telegramUser || !email){
+    showError('الرجاء ملء جميع الحقول المطلوبة');
+    return;
+  }
+  if(!isValidPhone(phone) || !isValidPhone(whatsapp)){
+    showError('الرجاء إدخال أرقام صحيحة (أرقام فقط أو + كبرى)');
+    return;
+  }
+  if(!isValidEmail(email)){
+    showError('الرجاء إدخال بريد إلكتروني صحيح');
+    return;
+  }
+
+  // prepare message (Markdown-safe)
+const escapeMd = txt => String(txt).replace(/([_*[\]()~`>#+-=|{}.!])/g, '\\$1');
+const message = [
+  '📥 *تسجيل شريك جديد*',
+  `*الاسم:* ${name}`,
+  `*الهاتف:* ${phone}`,
+  `*واتساب:* ${whatsapp}`,
+  `*يوزر تيليجرام:* ${escapeMd(telegramUser)}`,
+  `*البريد:* ${escapeMd(email)}`,
+  `*المصدر:* Landing Page`
+].join('\n');
+
+  const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+
+  // disable submit to prevent double-send
+  const btn = form.querySelector('.submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'جارٍ الإرسال...';
+
+  try{
+    const res = await fetch(url, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text: message,
+        parse_mode: 'Markdown'
+      })
+    });
+    const data = await res.json();
+
+    if(data && data.ok){
+      showSuccess('✅ تم إرسال بيانات التسجيل — سنراسل المشارك قريباً');
+      form.reset();
+    } else {
+      console.error('TG Error:', data);
+      showError('❌ فشل الإرسال إلى التليجرام — افحص التوكن وchat id');
+    }
+  }catch(err){
+    console.error(err);
+    showError('🚨 خطأ في الاتصال، حاول مرة أخرى');
+  }finally{
+    btn.disabled = false;
+    btn.textContent = 'إرسال بيانات التسجيل';
+  }
+});
+
+/* "كيف أبدأ" scroll */
+document.getElementById('howBtn')?.addEventListener('click', ()=> document.getElementById('how').scrollIntoView({behavior:'smooth'}));
+
+/* Small improvement: reveal on load scroll position */
+window.addEventListener('load', ()=>{
+  // nothing heavy - placeholder for future AOS init if needed
+});
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     section {
