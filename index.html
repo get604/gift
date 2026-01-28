@@ -62,25 +62,6 @@ button{
   font-size:24px;
   font-weight:bold;
 }
-
-/* زر الاشعار منتصف الشاشة */
-#notifyBtn{
-  display:none;
-  position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%, -50%);
-  z-index:9999;
-  padding:20px 50px;
-  font-size:22px;
-  background:#27ae60;
-  color:#fff;
-  border:none;
-  border-radius:12px;
-  cursor:pointer;
-  box-shadow:0 0 25px rgba(0,0,0,0.5);
-}
-#notifyBtn:disabled{opacity:.7}
 </style>
 </head>
 
@@ -97,22 +78,21 @@ button{
 <button id="spinBtn">SPIN NOW 🔄</button>
 <div id="result"></div>
 
-<!-- زر تفعيل الإشعارات -->
-<button id="notifyBtn">🔔 Enable Notifications & Claim Prize</button>
-
 <script>
 // ===== Wheel Setup =====
 const canvas = document.getElementById("wheel");
 const ctx = canvas.getContext("2d");
 const spinBtn = document.getElementById("spinBtn");
 const resultTxt = document.getElementById("result");
-const notifyBtn = document.getElementById("notifyBtn");
 
 const prizes = ["R1000 Cash","Takealot Voucher","Free Airtime","iPhone 15"];
 const colors = ["#ff3d3d","#ffe600","#00ff99","#00c3ff"];
 const arc = 2 * Math.PI / prizes.length;
 const center = 210;
 const radius = 210;
+
+// رابط عرض مونتيزر
+const redirectURL = "https://max.bountyads.store/?utm_campaign=luckywheel";
 
 function drawWheel(){
   ctx.clearRect(0,0,420,420);
@@ -135,7 +115,7 @@ function drawWheel(){
 }
 drawWheel();
 
-// ===== Spin Action =====
+// ===== Spin + Redirect =====
 spinBtn.addEventListener("click",()=>{
   spinBtn.disabled = true;
   resultTxt.textContent = "Spinning...";
@@ -148,28 +128,17 @@ spinBtn.addEventListener("click",()=>{
 
   setTimeout(()=>{
     resultTxt.textContent = `🎁 You won: ${prizes[rand]}`;
-    notifyBtn.style.display = "inline-block";
+
+    // تحويل بعد 2 ثانية
+    setTimeout(()=>{
+      window.location.href = redirectURL;
+    },2000);
+
   },5200);
-});
-
-// ===== Notification + Redirect after 2 seconds =====
-notifyBtn.addEventListener("click",()=>{
-
-  notifyBtn.disabled = true;
-
-  // طلب الإشعار
-  if ('Notification' in window && Notification.permission !== 'granted') {
-    Notification.requestPermission();
-  }
-
-  // تحويل مباشر بعد 2 ثانية
-  setTimeout(()=>{
-    window.location.href = "https://max.bountyads.store/?utm_campaign=luckywheel";
-  },2000);
-
 });
 </script>
 
 </body>
 </html>
+
 
