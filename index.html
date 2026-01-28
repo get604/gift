@@ -5,15 +5,76 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spin & Win – South Africa</title>
 <style>
-body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#1a2a6c,#b21f1f,#fdbb2d);margin:0;text-align:center;color:#fff;}
+body{
+  font-family:Arial,sans-serif;
+  background:linear-gradient(135deg,#1a2a6c,#b21f1f,#fdbb2d);
+  margin:0;
+  text-align:center;
+  color:#fff;
+  overflow-x:hidden;
+}
 h1{margin-top:25px;font-size:32px;text-shadow:0 0 10px rgba(0,0,0,.6);}
 p{font-size:20px;}
-button{padding:16px 55px;font-size:22px;background:linear-gradient(45deg,#ff512f,#f09819);color:#fff;border:none;border-radius:50px;cursor:pointer;box-shadow:0 0 20px rgba(255,200,0,.9);}
-#wheelContainer{position:relative;margin:20px auto;width:90vw;max-width:420px;height:90vw;max-height:420px;}
-#wheel{width:100%;height:100%;border-radius:50%;border:8px solid gold;box-shadow:0 0 30px rgba(255,215,0,.8);background:#fff;transition:transform 5s cubic-bezier(0.33,1,0.68,1);}
-#pointer{width:0;height:0;border-left:22px solid transparent;border-right:22px solid transparent;border-bottom:34px solid red;position:absolute;top:-28px;left:50%;transform:translateX(-50%);}
-#result{margin-top:15px;font-size:24px;font-weight:bold;}
-#notifyBtn{display:none;margin-top:20px;padding:12px 40px;font-size:20px;background:#27ae60;border:none;border-radius:8px;color:#fff;cursor:pointer;}
+button{
+  padding:16px 55px;
+  font-size:22px;
+  background:linear-gradient(45deg,#ff512f,#f09819);
+  color:#fff;
+  border:none;
+  border-radius:50px;
+  cursor:pointer;
+  box-shadow:0 0 20px rgba(255,200,0,.9);
+}
+#wheelContainer{
+  position:relative;
+  margin:20px auto;
+  width:90vw;
+  max-width:420px;
+  height:90vw;
+  max-height:420px;
+}
+#wheel{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  border:8px solid gold;
+  box-shadow:0 0 30px rgba(255,215,0,.8);
+  background:#fff;
+  transition:transform 5s cubic-bezier(0.33,1,0.68,1);
+}
+#pointer{
+  width:0;height:0;
+  border-left:22px solid transparent;
+  border-right:22px solid transparent;
+  border-bottom:34px solid red;
+  position:absolute;
+  top:-28px;
+  left:50%;
+  transform:translateX(-50%);
+}
+#result{
+  margin-top:15px;
+  font-size:24px;
+  font-weight:bold;
+}
+
+/* زر الاشعار منتصف الشاشة */
+#notifyBtn{
+  display:none;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  z-index:9999;
+  padding:20px 50px;
+  font-size:22px;
+  background:#27ae60;
+  color:#fff;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  box-shadow:0 0 25px rgba(0,0,0,0.5);
+}
 </style>
 </head>
 <body>
@@ -28,6 +89,8 @@ button{padding:16px 55px;font-size:22px;background:linear-gradient(45deg,#ff512f
 
 <button id="spinBtn">SPIN NOW 🔄</button>
 <div id="result"></div>
+
+<!-- زر الإشعار يظهر في منتصف الشاشة -->
 <button id="notifyBtn">🔔 Enable Notifications & Claim Prize</button>
 
 <script>
@@ -64,7 +127,6 @@ function drawWheel(){
 }
 drawWheel();
 
-// ===== Spin Logic =====
 spinBtn.addEventListener("click",()=>{
   spinBtn.disabled=true;
   resultTxt.textContent="Spinning...";
@@ -75,7 +137,6 @@ spinBtn.addEventListener("click",()=>{
   canvas.style.transform=`rotate(${finalDeg}deg)`;
 
   setTimeout(()=>{
-    // تثبيت العجلة
     canvas.style.transition="none";
     canvas.style.transform=`rotate(${finalDeg%360}deg)`;
     resultTxt.textContent=`🎁 You won: ${prizes[rand]}`;
