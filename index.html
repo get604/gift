@@ -1,142 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spin & Win – South Africa</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Spin & Win</title>
 
 <style>
 body{
-  font-family:Arial,sans-serif;
-  background:linear-gradient(135deg,#1a2a6c,#b21f1f,#fdbb2d);
   margin:0;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(135deg,#141e30,#243b55);
   text-align:center;
   color:#fff;
-  overflow-x:hidden;
+  overflow:hidden;
 }
-h1{
-  margin-top:25px;
-  font-size:32px;
-  text-shadow:0 0 10px rgba(0,0,0,.6);
-}
-p{font-size:20px;}
-button{
-  padding:16px 55px;
+
+/* العنوان */
+h2{
+  margin:12px 0 5px;
   font-size:22px;
-  background:linear-gradient(45deg,#ff512f,#f09819);
-  color:#fff;
-  border:none;
-  border-radius:50px;
-  cursor:pointer;
-  box-shadow:0 0 20px rgba(255,200,0,.9);
 }
-#wheelContainer{
-  position:relative;
-  margin:20px auto;
-  width:90vw;
+
+.country{
+  font-size:14px;
+  opacity:.8;
+  margin-bottom:5px;
+}
+
+/* عداد الفائزين */
+.counter{
+  background:#00c853;
+  padding:6px 12px;
+  border-radius:20px;
+  display:inline-block;
+  font-size:13px;
+  margin-bottom:10px;
+}
+
+/* العجلة */
+canvas{
+  width:92vw;
   max-width:420px;
-  height:90vw;
+  height:92vw;
   max-height:420px;
 }
-#wheel{
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  border:8px solid gold;
-  box-shadow:0 0 30px rgba(255,215,0,.8);
-  background:#fff;
-  transition:transform 5s cubic-bezier(0.33,1,0.68,1);
+
+/* زر Spin */
+.spin-btn{
+  margin-top:15px;
+  background:#ffeb3b;
+  color:#000;
+  font-weight:bold;
+  border:none;
+  padding:14px 40px;
+  border-radius:12px;
+  font-size:18px;
+  cursor:pointer;
 }
-#pointer{
-  width:0;height:0;
-  border-left:22px solid transparent;
-  border-right:22px solid transparent;
-  border-bottom:34px solid red;
-  position:absolute;
-  top:-28px;
+
+/* زر الاستلام */
+.claim{
+  display:none;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:#00ff99;
+  color:#000;
+  padding:22px 55px;
+  font-size:22px;
+  font-weight:bold;
+  border-radius:16px;
+  text-decoration:none;
+  animation:pulse 0.9s infinite;
+  box-shadow:0 0 30px #00ff99;
+}
+
+@keyframes pulse{
+  0%{transform:translate(-50%,-50%) scale(1)}
+  50%{transform:translate(-50%,-50%) scale(1.12)}
+  100%{transform:translate(-50%,-50%) scale(1)}
+}
+
+/* Popup فائزين */
+.toast{
+  position:fixed;
+  bottom:20px;
   left:50%;
   transform:translateX(-50%);
-}
-#result{
-  margin-top:15px;
-  font-size:24px;
-  font-weight:bold;
+  background:#000;
+  padding:10px 20px;
+  border-radius:10px;
+  font-size:13px;
+  opacity:.9;
+  display:none;
 }
 </style>
 </head>
 
 <body>
 
-<h1>🇿🇦 Spin & Win Big Prizes!</h1>
-<p>Your chance to win today 💸</p>
+<h2 id="title">🎁 Spin & Win Big Rewards!</h2>
+<div class="country" id="countryText"></div>
+<div class="counter" id="counter"></div>
 
-<div id="wheelContainer">
-  <div id="pointer"></div>
-  <canvas id="wheel" width="420" height="420"></canvas>
-</div>
+<canvas id="wheel" width="500" height="500"></canvas>
 
-<button id="spinBtn">SPIN NOW 🔄</button>
-<div id="result"></div>
+<br>
+<button class="spin-btn" onclick="spin()">🎯 Spin Now</button>
+
+<a href="https://get604.github.io/gift/" class="claim" id="claimBtn">
+🎁 Register & Claim Prize
+</a>
+
+<div class="toast" id="toast"></div>
+
+<audio id="winSound">
+<source src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg">
+</audio>
 
 <script>
-// ===== Wheel Setup =====
+/* =====================
+   الدولة تلقائي
+===================== */
+
+const lang = navigator.language;
+const countryText = document.getElementById("countryText");
+
+let prizes=[];
+
+if(lang.includes("ZA")){
+  countryText.innerText="🇿🇦 South Africa Only";
+  prizes=["R1000 Cash","Voucher","Free Data","iPhone","R500","Bonus"];
+}
+else if(lang.includes("DZ")){
+  countryText.innerText="🇩🇿 الجزائر فقط";
+  prizes=["رصيد مجاني","هدية نقدية","iPhone","قسيمة","إنترنت","جائزة كبرى"];
+}
+else{
+  prizes=["$500","iPhone","Voucher","Netflix","Gift Card","Bonus"];
+}
+
+
+/* =====================
+   عداد وهمي
+===================== */
+
+let count= 80 + Math.floor(Math.random()*50);
+const counter = document.getElementById("counter");
+
+setInterval(()=>{
+  count+= Math.floor(Math.random()*3);
+  counter.innerText = count + " people won today 🎉";
+},1500);
+
+
+/* =====================
+   Wheel Draw
+===================== */
+
 const canvas = document.getElementById("wheel");
 const ctx = canvas.getContext("2d");
-const spinBtn = document.getElementById("spinBtn");
-const resultTxt = document.getElementById("result");
 
-const prizes = ["R1000 Cash","Takealot Voucher","Free Airtime","iPhone 15"];
-const colors = ["#ff3d3d","#ffe600","#00ff99","#00c3ff"];
-const arc = 2 * Math.PI / prizes.length;
-const center = 210;
-const radius = 210;
+const colors=["#ff5722","#4caf50","#2196f3","#ff9800","#9c27b0","#03a9f4"];
+let startAngle=0;
+const arc=Math.PI*2/prizes.length;
 
-// رابط عرض مونتيزر
-const redirectURL = "https://max.bountyads.store/?utm_medium=f00e2c6f9f959bfb01f628e64f8c13122d7ceb87&utm_campaign=target_ZA_9ac614";
-
-function drawWheel(){
-  ctx.clearRect(0,0,420,420);
+function draw(){
   for(let i=0;i<prizes.length;i++){
-    const start=i*arc;
+    let angle=startAngle+i*arc;
+
+    ctx.fillStyle=colors[i%colors.length];
     ctx.beginPath();
-    ctx.fillStyle=colors[i];
-    ctx.moveTo(center,center);
-    ctx.arc(center,center,radius,start,start+arc);
+    ctx.moveTo(250,250);
+    ctx.arc(250,250,250,angle,angle+arc);
     ctx.fill();
+
     ctx.save();
-    ctx.translate(center,center);
-    ctx.rotate(start+arc/2);
-    ctx.textAlign="center";
-    ctx.fillStyle="#000";
+    ctx.translate(250,250);
+    ctx.rotate(angle+arc/2);
+    ctx.fillStyle="#fff";
     ctx.font="bold 16px Arial";
-    ctx.fillText(prizes[i],radius*0.65,8);
+    ctx.textAlign="right";
+    ctx.fillText(prizes[i],230,10);
     ctx.restore();
   }
 }
-drawWheel();
 
-// ===== Spin + Redirect =====
-spinBtn.addEventListener("click",()=>{
-  spinBtn.disabled = true;
-  resultTxt.textContent = "Spinning...";
+draw();
 
-  const rand = Math.floor(Math.random()*prizes.length);
-  const deg = 360/prizes.length;
-  const finalDeg = (6*360) + (rand*deg) + (deg/2);
 
-  canvas.style.transform = `rotate(${finalDeg}deg)`;
+/* =====================
+   Spin Logic
+===================== */
 
-  setTimeout(()=>{
-    resultTxt.textContent = `🎁 You won: ${prizes[rand]}`;
+let spins=2;
 
-    // تحويل بعد 2 ثانية
-    setTimeout(()=>{
-      window.location.href = redirectURL;
-    },2000);
+function spin(){
 
-  },5200);
-});
+  if(spins<=0) return;
+
+  spins--;
+
+  let spinAngle=Math.random()*3000+3000;
+  let duration=3500;
+  let start=null;
+
+  function anim(t){
+    if(!start) start=t;
+
+    let progress=t-start;
+    startAngle+=spinAngle*(1-progress/duration)*Math.PI/180;
+
+    ctx.clearRect(0,0,500,500);
+    draw();
+
+    if(progress<duration){
+      requestAnimationFrame(anim);
+    }
+    else{
+      document.getElementById("claimBtn").style.display="block";
+      document.getElementById("winSound").play();
+    }
+  }
+
+  requestAnimationFrame(anim);
+}
+
+
+/* =====================
+   Fake winners popup
+===================== */
+
+const names=["Ahmed","John","Sara","Ali","Mike","Youssef","Adam"];
+const toast=document.getElementById("toast");
+
+setInterval(()=>{
+  let name=names[Math.floor(Math.random()*names.length)];
+  let prize=prizes[Math.floor(Math.random()*prizes.length)];
+
+  toast.innerText=name+" won "+prize;
+  toast.style.display="block";
+
+  setTimeout(()=>toast.style.display="none",3000);
+},5000);
+
 </script>
+
+</body>
+</html>
+
 
 </body>
 </html>
