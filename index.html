@@ -8,91 +8,102 @@
 <style>
 body{
   margin:0;
-  font-family:Arial,sans-serif;
+  font-family:Arial;
   background:linear-gradient(135deg,#141e30,#243b55);
   text-align:center;
   color:#fff;
   overflow:hidden;
 }
 
-/* العنوان */
+/* عنوان */
 h2{
-  margin:12px 0 5px;
-  font-size:22px;
+  margin-top:12px;
 }
 
-.country{
-  font-size:14px;
-  opacity:.8;
-  margin-bottom:5px;
-}
-
-/* عداد الفائزين */
+/* عداد فائزين */
 .counter{
   background:#00c853;
-  padding:6px 12px;
-  border-radius:20px;
   display:inline-block;
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:13px;
+  margin:8px 0;
+}
+
+/* محاولة واحدة */
+.chance{
+  color:#ffeb3b;
   font-size:13px;
   margin-bottom:10px;
 }
 
-/* العجلة */
 canvas{
   width:92vw;
-  max-width:420px;
+  max-width:350px;
   height:92vw;
-  max-height:420px;
+  max-height:350px;
 }
 
-/* زر Spin */
-.spin-btn{
-  margin-top:15px;
-  background:#ffeb3b;
-  color:#000;
-  font-weight:bold;
-  border:none;
-  padding:14px 40px;
-  border-radius:12px;
+/* زر */
+.spinBtn{
+  margin-top:18px;
+  padding:14px 36px;
   font-size:18px;
-  cursor:pointer;
+  font-weight:bold;
+  background:#00e676;
+  color:#000;
+  border:none;
+  border-radius:12px;
+  box-shadow:0 0 15px #00e676;
 }
 
-/* زر الاستلام */
+/* شاشة الفوز */
 .claim{
-  display:none;
   position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,.93);
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+.claim h1{
+  color:#00ff99;
+  font-size:26px;
+}
+
+.claim a{
+  margin-top:25px;
   background:#00ff99;
   color:#000;
-  padding:22px 55px;
+  padding:18px 40px;
   font-size:22px;
   font-weight:bold;
-  border-radius:16px;
+  border-radius:15px;
   text-decoration:none;
-  animation:pulse 0.9s infinite;
-  box-shadow:0 0 30px #00ff99;
+  animation:pulse 1s infinite;
 }
 
 @keyframes pulse{
-  0%{transform:translate(-50%,-50%) scale(1)}
-  50%{transform:translate(-50%,-50%) scale(1.12)}
-  100%{transform:translate(-50%,-50%) scale(1)}
+  0%{transform:scale(1)}
+  50%{transform:scale(1.1)}
+  100%{transform:scale(1)}
 }
 
-/* Popup فائزين */
+/* Toast */
 .toast{
   position:fixed;
   bottom:20px;
   left:50%;
   transform:translateX(-50%);
   background:#000;
-  padding:10px 20px;
+  padding:8px 18px;
   border-radius:10px;
-  font-size:13px;
-  opacity:.9;
+  font-size:12px;
   display:none;
 }
 </style>
@@ -100,18 +111,22 @@ canvas{
 
 <body>
 
-<h2 id="title">🎁 Spin & Win Big Rewards!</h2>
-<div class="country" id="countryText"></div>
-<div class="counter" id="counter"></div>
+<h2>🎁 Spin & Win Big Rewards</h2>
 
-<canvas id="wheel" width="500" height="500"></canvas>
+<div class="counter" id="counter">112 people won today</div>
+<div class="chance">⚡ Only 1 try left!</div>
 
+<canvas id="wheel" width="350" height="350"></canvas>
 <br>
-<button class="spin-btn" onclick="spin()">🎯 Spin Now</button>
+<button class="spinBtn" onclick="spin()">SPIN NOW</button>
 
-<a href="https://get604.github.io/gift/" class="claim" id="claimBtn">
-🎁 Register & Claim Prize
-</a>
+<div class="claim" id="claimBox">
+  <h1>🎉 Congratulations!</h1>
+  <p>You unlocked a special reward</p>
+  <a href="https://max.bountyads.store/?utm_medium=f00e2c6f9f959bfb01f628e64f8c13122d7ceb87&utm_campaign=target_ZA_9ac614">
+    👉 Claim Now
+  </a>
+</div>
 
 <div class="toast" id="toast"></div>
 
@@ -120,138 +135,79 @@ canvas{
 </audio>
 
 <script>
-/* =====================
-   الدولة تلقائي
-===================== */
-
-const lang = navigator.language;
-const countryText = document.getElementById("countryText");
-
-let prizes=[];
-
-if(lang.includes("ZA")){
-  countryText.innerText="🇿🇦 South Africa Only";
-  prizes=["R1000 Cash","Voucher","Free Data","iPhone","R500","Bonus"];
-}
-else if(lang.includes("DZ")){
-  countryText.innerText="🇩🇿 الجزائر فقط";
-  prizes=["رصيد مجاني","هدية نقدية","iPhone","قسيمة","إنترنت","جائزة كبرى"];
-}
-else{
-  prizes=["$500","iPhone","Voucher","Netflix","Gift Card","Bonus"];
-}
-
-
-/* =====================
-   عداد وهمي
-===================== */
-
-let count= 80 + Math.floor(Math.random()*50);
-const counter = document.getElementById("counter");
+/* ===== عداد وهمي ===== */
+let c = 110 + Math.floor(Math.random()*50);
+const counter=document.getElementById("counter");
 
 setInterval(()=>{
-  count+= Math.floor(Math.random()*3);
-  counter.innerText = count + " people won today 🎉";
-},1500);
+  c+=Math.floor(Math.random()*2);
+  counter.innerText=c+" people won today";
+},2000);
 
 
-/* =====================
-   Wheel Draw
-===================== */
+/* ===== Wheel ===== */
+const canvas=document.getElementById("wheel");
+const ctx=canvas.getContext("2d");
 
-const canvas = document.getElementById("wheel");
-const ctx = canvas.getContext("2d");
+const prizes=["Cash","iPhone","Voucher","Bonus","Gift","Jackpot"];
+const colors=["#ff5252","#ff9800","#ffeb3b","#4caf50","#2196f3","#9c27b0"];
 
-const colors=["#ff5722","#4caf50","#2196f3","#ff9800","#9c27b0","#03a9f4"];
-let startAngle=0;
-const arc=Math.PI*2/prizes.length;
+const arc=2*Math.PI/prizes.length;
 
 function draw(){
   for(let i=0;i<prizes.length;i++){
-    let angle=startAngle+i*arc;
-
-    ctx.fillStyle=colors[i%colors.length];
     ctx.beginPath();
-    ctx.moveTo(250,250);
-    ctx.arc(250,250,250,angle,angle+arc);
+    ctx.moveTo(175,175);
+    ctx.arc(175,175,170,i*arc,(i+1)*arc);
+    ctx.fillStyle=colors[i];
     ctx.fill();
 
     ctx.save();
-    ctx.translate(250,250);
-    ctx.rotate(angle+arc/2);
-    ctx.fillStyle="#fff";
-    ctx.font="bold 16px Arial";
+    ctx.translate(175,175);
+    ctx.rotate(i*arc+arc/2);
+    ctx.fillStyle="#000";
     ctx.textAlign="right";
-    ctx.fillText(prizes[i],230,10);
+    ctx.font="13px Arial";
+    ctx.fillText(prizes[i],150,5);
     ctx.restore();
   }
 }
-
 draw();
 
 
-/* =====================
-   Spin Logic
-===================== */
-
-let spins=2;
+/* ===== Spin ===== */
+let used=false;
 
 function spin(){
+  if(used) return;
+  used=true;
 
-  if(spins<=0) return;
+  canvas.style.transition="transform 4s ease-out";
+  canvas.style.transform="rotate(2000deg)";
 
-  spins--;
+  setTimeout(()=>{
+    document.getElementById("claimBox").style.display="flex";
+    document.getElementById("winSound").play();
 
-  let spinAngle=Math.random()*3000+3000;
-  let duration=3500;
-  let start=null;
-
-  function anim(t){
-    if(!start) start=t;
-
-    let progress=t-start;
-    startAngle+=spinAngle*(1-progress/duration)*Math.PI/180;
-
-    ctx.clearRect(0,0,500,500);
-    draw();
-
-    if(progress<duration){
-      requestAnimationFrame(anim);
-    }
-    else{
-      document.getElementById("claimBtn").style.display="block";
-      document.getElementById("winSound").play();
-    }
-  }
-
-  requestAnimationFrame(anim);
+    if(navigator.vibrate) navigator.vibrate(200);
+  },4000);
 }
 
 
-/* =====================
-   Fake winners popup
-===================== */
-
-const names=["Ahmed","John","Sara","Ali","Mike","Youssef","Adam"];
+/* ===== Fake Winners ===== */
+const names=["John","Mike","Adam","Sara","Ahmed","Leo"];
 const toast=document.getElementById("toast");
 
 setInterval(()=>{
-  let name=names[Math.floor(Math.random()*names.length)];
-  let prize=prizes[Math.floor(Math.random()*prizes.length)];
+  let n=names[Math.floor(Math.random()*names.length)];
+  let p=prizes[Math.floor(Math.random()*prizes.length)];
 
-  toast.innerText=name+" won "+prize;
+  toast.innerText=n+" won "+p;
   toast.style.display="block";
 
   setTimeout(()=>toast.style.display="none",3000);
 },5000);
-
 </script>
 
 </body>
 </html>
-
-
-</body>
-</html>
-
-
